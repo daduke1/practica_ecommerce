@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - E-commerce</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Plantas St</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Ingresar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="carrito.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge bg-danger">3</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Carrusel -->
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://media.istockphoto.com/id/1644577823/photo/swiss-chard-crop-in-the-vegetable-garden.webp?b=1&s=612x612&w=0&k=20&c=qBGmO11f4nRFlhnc3Pn9gV1-OMp8nU8J1zzajUOnkAQ=" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+                <img src="https://media.istockphoto.com/id/1540197191/photo/small-tree-growing-with-sunshine-in-garden-eco-concept.webp?b=1&s=612x612&w=0&k=20&c=ehJuJIl97S3XRB_Xpv1wlcIw43Ov18sMZGfr0HCwppc=" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+                <img src="https://images.freeimages.com/images/large-previews/06e/crassulaceae-1332861.jpg?fmt=webp&w=500" class="d-block w-100" alt="Slide 3">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Listado de productos -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card">
+                    <img src="https://media.istockphoto.com/id/1473588847/photo/monstera-monkey-mask-in-a-pot-on-the-shelf-green-houseplants-modern-room-decor-interior.webp?b=1&s=612x612&w=0&k=20&c=4uhh34uPs3ghXdP9pK5vLz7FNbLPu9rjYdBllGW53Ww=" class="card-img-top" alt="Producto 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Monstera Deliciosa</h5>
+                        <p class="card-text">Hojas grandes y perforadas</p>
+                        <a href="#" class="btn btn-primary">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card">
+                    <img src="https://media.istockphoto.com/id/1297144974/photo/trendy-cactus-plants-on-pink-background-wall-minimal-creative-style.webp?b=1&s=612x612&w=0&k=20&c=kRh-aQrFT3YNbVevnu1nTyyhgN4OFPsNvdJ23mkYxIc=" class="card-img-top" alt="Producto 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Suculenta Echeveria</h5>
+                        <p class="card-text">Pequeña y con forma de roseta, fácil de cuidar.</p>
+                        <a href="#" class="btn btn-primary">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card">
+                    <img src="https://media.istockphoto.com/id/1954197317/photo/ficus-lyrata-or-fiddle-leaf-fig-tree-in-living-room-interior.webp?b=1&s=612x612&w=0&k=20&c=aZhD7_FHD6FfETpdlXfCRz3rWaU4zs3ets6LwiSIcJc=" class="card-img-top" alt="Producto 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Ficus Lyrata</h5>
+                        <p class="card-text">Planta de interior con hojas grandes y brillantes.</p>
+                        <a href="#" class="btn btn-primary">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card">
+                    <img src="https://media.istockphoto.com/id/2149770816/photo/snake-plant-dracaena-trifasciata-devil-tongue-in-clay-pot-on-white-pattern-wall-background.webp?b=1&s=612x612&w=0&k=20&c=6XOhsYWmS60nqTM_l_lPM_dYAMJ38bDGMajm82zvfzQ=" class="card-img-top" alt="Producto 4">
+                    <div class="card-body">
+                        <h5 class="card-title">Sansevieria</h5>
+                        <p class="card-text">Resistente y perfecta para purificar el aire.</p>
+                        <a href="#" class="btn btn-primary">Agregar al carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+        </ul>
+    </nav>
+
+<!-- Modal de Login -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Ingresar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <!-- Campo de correo electrónico -->
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label">Correo</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo" required>
+                        </div>
+                    </div>
+
+                    <!-- Campo de contraseña -->
+                    <div class="form-group mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" required>
+                        </div>
+                    </div>
+
+                    <!-- Botón de login -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <p class="mb-0">¿No tienes cuenta? <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Regístrate aquí</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal de Registro -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Registro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="firstName">Nombre</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="lastName">Apellido</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="emailRegister">Correo electrónico</label>
+                            <input type="email" class="form-control" id="emailRegister" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordRegister">Contraseña</label>
+                            <input type="password" class="form-control" id="passwordRegister" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

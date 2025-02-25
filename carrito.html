@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - E-commerce</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Plant St</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Ingresar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Registrarse</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="carrito.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge bg-danger">3</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Resumen de Compra -->
+    <div class="container mt-4">
+        <h2>Resumen de Compra</h2>
+
+        <!-- Producto 1: Monstera Deliciosa -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="https://media.istockphoto.com/id/1473588847/photo/monstera-monkey-mask-in-a-pot-on-the-shelf-green-houseplants-modern-room-decor-interior.webp?b=1&s=612x612&w=0&k=20&c=4uhh34uPs3ghXdP9pK5vLz7FNbLPu9rjYdBllGW53Ww=" class="img-fluid" alt="Monstera Deliciosa">
+                    </div>
+                    <div class="col-md-9">
+                        <h5 class="card-title">Monstera Deliciosa</h5>
+                        <p class="card-text">Hojas grandes y perforadas.</p>
+                        <p><strong>Cantidad:</strong> 1</p>
+                        <p><strong>Precio:</strong> $42.00 m.n.</p>
+                        <button class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Producto 2: Suculenta Echeveria -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="https://media.istockphoto.com/id/1297144974/photo/trendy-cactus-plants-on-pink-background-wall-minimal-creative-style.webp?b=1&s=612x612&w=0&k=20&c=kRh-aQrFT3YNbVevnu1nTyyhgN4OFPsNvdJ23mkYxIc=" class="img-fluid" alt="Suculenta Echeveria">
+                    </div>
+                    <div class="col-md-9">
+                        <h5 class="card-title">Suculenta Echeveria</h5>
+                        <p class="card-text">Pequeña y con forma de roseta, fácil de cuidar.</p>
+                        <p><strong>Cantidad:</strong> 2</p>
+                        <p><strong>Precio:</strong> $75.00 m.n.</p>
+                        <button class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Costo de envío y total -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Detalles de Pago</h5>
+                <p><strong>Costo de envío:</strong> $30.00 m.n.</p>
+                <p><strong>Monto a pagar:</strong> $200.00 m.n.</p>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="index.html" class="btn btn-secondary">Cancelar</a>
+            <a href="ordenes.html" class="btn btn-success">Pagar</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

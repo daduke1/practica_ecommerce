@@ -1,264 +1,179 @@
-// index.js - Complete updated version
-const apiURL = 'https://crudcrud.com/api/9df620adc24b4d898cdd023fe61f7da4/productos';
-// Test API connection
-async function testAPI() {
-    try {
-      const response = await fetch(apiURL);
-      const data = await response.json();
-      console.log("API Response:", data);
-      return data;
-    } catch (error) {
-      console.error("API Error:", error);
-      return null;
-    }
-  }
-  
-  testAPI().then(data => {
-    if (!data || data.length === 0) {
-      console.warn("API returned no products, will initialize sample plants");
-    }
-  });
+const apiURL = 'https://crudcrud.com/api/848e1304ffc94317a63103ce4d435c33/productos';
 const productService = new ProductService(apiURL);
-// NEW: Cleanup function to delete all existing products
-async function deleteAllProducts() {
-    try {
-      const products = await productService.getProducts();
-      await Promise.all(products.map(p => productService.deleteProduct(p._id)));
-      console.log(`Deleted ${products.length} old products`);
-    } catch (error) {
-      console.error("Cleanup failed:", error);
-    }
-  }
-const cart = new Cart();
-
-const productList = document.getElementById('product-list');
-const cartList = document.getElementById('cart-list');
-const cartTotal = document.getElementById('cart-total');
+const cartManager = new CartManager();
 
 const samplePlants = [
     { 
-      name: "Monstera Deliciosa", 
-      price: 42.00, 
-      description: "Hojas grandes y perforadas",
-      imageUrl: "https://mekero.cl/cdn/shop/files/MonsteraDeliciosa_900x.png?v=1691983400" 
+        name: "Monstera Deliciosa", 
+        price: 42.00, 
+        description: "Hojas grandes y perforadas",
+        imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Findoorplantaddicts.com%2Fwp-content%2Fuploads%2F2020%2F01%2FMonstera-Deliciosa.jpg&f=1&nofb=1&ipt=6a06f2fb3c0764251c899b0e96521fbd96786764369d5b1a03a3c88b11c51aed&ipo=images"
     },
     { 
-      name: "Suculenta Echeveria", 
-      price: 37.50, 
-      description: "Pequeña y con forma de roseta, fácil de cuidar",
-      imageUrl: "https://www.verdeesvida.es/files/plant/29072023192833_Echeveria%20OHF.jpg"
+        name: "Suculenta Echeveria", 
+        price: 37.50, 
+        description: "Pequeña y con forma de roseta, fácil de cuidar",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwamFJoySqERdqDMB9Esu3F6SZ6yWlmNSsUA&s"
     },
     { 
-      name: "Ficus Lyrata", 
-      price: 55.00, 
-      description: "Planta de interior con hojas grandes y brillantes",
-      imageUrl: "https://florespumahue.com/cdn/shop/files/20240504_120130.jpg?v=1719282864&width=1946"
+        name: "Ficus Lyrata", 
+        price: 55.00, 
+        description: "Planta de interior con hojas grandes y brillantes",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCPSaCC6HD4JxwX8S8M5laeCM9ISv5iGvKMQ&s"
     },
     { 
-      name: "Sansevieria", 
-      price: 35.00, 
-      description: "Resistente y perfecta para purificar el aire",
-      imageUrl: "https://res.cloudinary.com/fronda/image/upload/f_auto,q_auto,c_pad,w_648/prod/build/shop/images/blog/aprender/guia-de-cuidados-de-las-sansevierias/image2.fa09fbd3.jpg"
+        name: "Sansevieria", 
+        price: 35.00, 
+        description: "Resistente y perfecta para purificar el aire",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0_SLbP5kEFhZwesSQcIZN-aC5z_f1BkYC_Q&s"
     }
-  ];
-// Render plant products
-function renderProducts(products) {
-    productList.innerHTML = "";
-    products.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'col-md-3 col-sm-6 mb-4';
-        card.innerHTML = `
-            <div class="card h-100">
-                <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text">${product.description}</p>
-                    <p class="card-text"><strong>$${product.price.toFixed(2)}</strong></p>
-                    <button class="btn btn-primary mt-auto add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">
-                        Agregar al carrito
-                    </button>
-                </div>
-            </div>
-        `;
-        productList.appendChild(card);
-    });
+];
 
-    // Add event listeners to all add-to-cart buttons
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const { id, name, price } = e.target.dataset;
-            addToCart(id, name, parseFloat(price));
-        });
-    });
+async function loadProducts() {
+  try {
+      console.log("Loading products from API...");
+      let products = await productService.getProducts();
+      
+      // Validate API response
+      if (!Array.isArray(products)) {
+          throw new Error("Invalid API response format");
+      }
+
+      // Filter out invalid products
+      products = products.filter(p => {
+          try {
+              new Product(p._id, p.name, p.price, p.description, p.imageUrl);
+              return true;
+          } catch (e) {
+              console.warn("Invalid product skipped:", p, e);
+              return false;
+          }
+      });
+
+      // If no valid products, use samples
+      if (products.length === 0) {
+          console.log("No valid products, using samples");
+          products = samplePlants.map(plant => ({
+              _id: crypto.randomUUID(),
+              ...plant
+          }));
+      }
+
+      renderProducts(products);
+  } catch (error) {
+      console.error("Error loading products:", error);
+      renderProducts(samplePlants.map(plant => ({
+          _id: crypto.randomUUID(),
+          ...plant
+      })));
+  }
 }
-
-// Render cart
-function renderCart() {
-    cartList.innerHTML = "";
-    let total = 0;
-    
-    cart.items.forEach(({ product, amount }) => {
-        total += product.price * amount;
-        const cartItem = document.createElement('div');
-        cartItem.className = 'col-md-4 mb-4';
-        cartItem.innerHTML = `
-            <div class="card">
-                <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}" style="height: 150px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text">Cantidad: ${amount}</p>
-                    <p class="card-text">$${(product.price * amount).toFixed(2)}</p>
-                    <button class="btn btn-danger btn-sm remove-from-cart" data-id="${product.id}">
-                        Eliminar
-                    </button>
-                </div>
-            </div>
-        `;
-        cartList.appendChild(cartItem);
-    });
-
-    // Add event listeners to remove buttons
-    document.querySelectorAll('.remove-from-cart').forEach(button => {
-        button.addEventListener('click', (e) => {
-            removeFromCart(e.target.dataset.id);
-        });
-    });
-
-    cartTotal.textContent = total.toFixed(2);
-}
-
-// Utility functions for localStorage
-function saveCartToLocalStorage() {
-    const cartData = {
-        items: Array.from(cart.items.entries())
-    };
-    localStorage.setItem('plantCart', JSON.stringify(cartData));
-}
-
-function loadCartFromLocalStorage() {
-    const savedCart = localStorage.getItem('plantCart');
-    if (savedCart) {
-        const parsed = JSON.parse(savedCart);
-        parsed.items.forEach(([id, item]) => {
-            const product = new Product(
-                id,
-                item.product.name,
-                item.product.price,
-                item.product.description,
-                item.product.imageUrl
-            );
-            cart.items.set(id, { product, amount: item.amount });
-        });
-    }
-}
-
-// Updated addToCart function
-window.addToCart = function(uuid, name, price) {
-    const plant = samplePlants.find(p => p.name === name);
-    if (!plant) return;
-    
-    const product = new Product(
-        uuid,
-        name,
-        price,
-        plant.description,
-        plant.imageUrl
-    );
-    
-    cart.addItem(product, 1);
-    saveCartToLocalStorage();  // <-- Save to localStorage
-    renderCart();
-    updateCartBadge();         // <-- Update badge count
-};
-
-// Updated removeFromCart function
-window.removeFromCart = function(uuid) {
-    cart.removeItem(uuid);
-    saveCartToLocalStorage();  // <-- Save to localStorage
-    renderCart();
-    updateCartBadge();         // <-- Update badge count
-};
-
-function updateCartBadge() {
-    const badge = document.getElementById('cart-badge');
-    if (badge) {
-        let totalItems = 0;
-        cart.items.forEach(({ amount }) => {
-            totalItems += amount;
-        });
-        badge.textContent = totalItems;
-    }
-}
-
-// Initialize the app
-async function initApp() {
-    try {
-        // Try to get products from API
-        let products = await productService.getProducts();
-        
-        // If no products in API, create sample plants
-        if (products.length === 0) {
-            console.log("No products found, creating sample plants...");
-            await Promise.all(samplePlants.map(plant => {
-                const product = new Product(
-                    crypto.randomUUID(),
-                    plant.name,
-                    plant.price,
-                    plant.description,
-                    plant.imageUrl
-                );
-                return productService.createProduct(product);
-            }));
-            // Reload products after creation
-            products = await productService.getProducts();
-        }
-        
-        renderProducts(products);
-    } catch (error) {
-        console.error("Error loading products:", error);
-        // Fallback to showing sample plants if API fails
-        const fallbackProducts = samplePlants.map(plant => new Product(
-            crypto.randomUUID(),
-            plant.name,
-            plant.price,
-            plant.description,
-            plant.imageUrl
-        ));
-        renderProducts(fallbackProducts);
-    }
-}
-
-// Start the application
-document.addEventListener('DOMContentLoaded', async () => {
-    // 1. First clear old products
-    await deleteAllProducts();
-    
-    // 2. Load fresh plants
-    try {
-      // Try to create sample plants
-      await Promise.all(samplePlants.map(plant => {
-        const product = new Product(
+async function createSamplePlants() {
+  return Promise.all(samplePlants.map(plant => {
+      const product = new Product(
           crypto.randomUUID(),
           plant.name,
           plant.price,
           plant.description,
           plant.imageUrl
-        );
-        return productService.createProduct(product);
-      }));
-      
-      // Then load them back
-      const freshProducts = await productService.getProducts();
-      renderProducts(freshProducts);
-    } catch (error) {
-      console.error("Using fallback plants:", error);
-      renderProducts(samplePlants.map(p => ({
-        id: crypto.randomUUID(),
-        ...p
-      })));
-    }
-    
-    // Load cart
-    loadCartFromLocalStorage();
-    updateCartBadge();
+      );
+      return productService.createProduct(product);
+  }));
+}
+
+function renderProducts(products) {
+  console.log("Rendering products:", products);
+  const productList = document.getElementById('product-list');
+  if (!productList) {
+      console.error("product-list element not found!");
+      return;
+  }
+  
+  productList.innerHTML = '';
+
+  products.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'col-md-3 col-sm-6 mb-4';
+      card.innerHTML = `
+          <div class="card h-100">
+              <img src="${product.imageUrl}" 
+                   class="card-img-top" 
+                   alt="${product.name}"
+                   style="height: 200px; object-fit: cover;"
+                   onerror="this.src='https://via.placeholder.com/300x200?text=Plant+Image'">
+              <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">${product.name}</h5>
+                  <p class="card-text">${product.description}</p>
+                  <p class="card-text"><strong>$${product.price.toFixed(2)}</strong></p>
+                  <button class="btn btn-primary mt-auto add-to-cart" 
+                          data-id="${product.id}"
+                          data-name="${product.name}"
+                          data-price="${product.price}">
+                      Add to Cart
+                  </button>
+              </div>
+          </div>
+      `;
+      productList.appendChild(card);
   });
+
+  // Add event listeners
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', (e) => {
+          const {id, name, price} = e.target.dataset;
+          addToCart(id, name, parseFloat(price));
+      });
+  });
+}
+
+function addToCart(productId, name, price) {
+  try {
+    const plant = samplePlants.find(p => p.name === name) || {
+      name,
+      price,
+      description: "",
+      imageUrl: "https://via.placeholder.com/300x200?text=Plant"
+    };
+
+    const product = new Product(
+      productId,
+      name,
+      price,
+      plant.description,
+      plant.imageUrl
+    );
+
+    if (cartManager.addItem(product, 1)) {
+      // Show success feedback
+      const feedback = document.createElement('div');
+      feedback.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+      feedback.innerHTML = `
+        <i class="fas fa-check-circle"></i> 
+        Added ${name} to cart!
+        <a href="carrito.html" class="alert-link" 
+           onclick="event.stopPropagation(); window.location.href='carrito.html'">
+          View Cart
+        </a>
+      `;
+      document.body.appendChild(feedback);
+      
+      // Auto-remove feedback after 3 seconds
+      setTimeout(() => {
+        if (document.body.contains(feedback)) {
+          feedback.remove();
+        }
+      }, 3000);
+      
+      return true;
+    }
+  } catch (e) {
+    console.error("Error in addToCart:", e);
+  }
+  return false;
+}
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', () => {
+  loadProducts();
+  cartManager.updateBadge();
+});

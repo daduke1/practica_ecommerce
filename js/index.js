@@ -4,24 +4,28 @@ const cartManager = new CartManager();
 
 const samplePlants = [
     { 
+        id: "planta1",
         name: "Monstera Deliciosa", 
         price: 42.00, 
         description: "Hojas grandes y perforadas",
         imageUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Findoorplantaddicts.com%2Fwp-content%2Fuploads%2F2020%2F01%2FMonstera-Deliciosa.jpg&f=1&nofb=1&ipt=6a06f2fb3c0764251c899b0e96521fbd96786764369d5b1a03a3c88b11c51aed&ipo=images"
     },
     { 
+        id: "planta2",
         name: "Suculenta Echeveria", 
         price: 37.50, 
         description: "Pequeña y con forma de roseta, fácil de cuidar",
         imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwamFJoySqERdqDMB9Esu3F6SZ6yWlmNSsUA&s"
     },
     { 
+        id: "planta3",
         name: "Ficus Lyrata", 
         price: 55.00, 
         description: "Planta de interior con hojas grandes y brillantes",
         imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCPSaCC6HD4JxwX8S8M5laeCM9ISv5iGvKMQ&s"
     },
     { 
+        id: "planta4",
         name: "Sansevieria", 
         price: 35.00, 
         description: "Resistente y perfecta para purificar el aire",
@@ -84,11 +88,6 @@ async function createSamplePlants() {
 function renderProducts(products) {
   console.log("Rendering products:", products);
   const productList = document.getElementById('product-list');
-  if (!productList) {
-      console.error("product-list element not found!");
-      return;
-  }
-  
   productList.innerHTML = '';
 
   products.forEach(product => {
@@ -106,7 +105,7 @@ function renderProducts(products) {
                   <p class="card-text">${product.description}</p>
                   <p class="card-text"><strong>$${product.price.toFixed(2)}</strong></p>
                   <button class="btn btn-primary mt-auto add-to-cart" 
-                          data-id="${product.id}"
+                          data-id="${product.id || product._id}"  // Use proper ID field
                           data-name="${product.name}"
                           data-price="${product.price}">
                       Add to Cart
@@ -128,6 +127,7 @@ function renderProducts(products) {
 
 function addToCart(productId, name, price) {
   try {
+    // Find the complete product data
     const plant = samplePlants.find(p => p.name === name) || {
       name,
       price,
@@ -135,14 +135,16 @@ function addToCart(productId, name, price) {
       imageUrl: "https://via.placeholder.com/300x200?text=Plant"
     };
 
+    // Create a new Product instance with all necessary data
     const product = new Product(
-      productId,
+      productId,  // Use the unique product ID
       name,
       price,
       plant.description,
       plant.imageUrl
     );
 
+    // Add to cart using the product's unique ID
     if (cartManager.addItem(product, 1)) {
       // Show success feedback
       const feedback = document.createElement('div');
@@ -157,7 +159,6 @@ function addToCart(productId, name, price) {
       `;
       document.body.appendChild(feedback);
       
-      // Auto-remove feedback after 3 seconds
       setTimeout(() => {
         if (document.body.contains(feedback)) {
           feedback.remove();

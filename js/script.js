@@ -11,14 +11,29 @@ class CartManager {
     this.loadCart();
   }
 
-  // Add item to cart with validation
   addItem(product, amount) {
     if (!(product instanceof Product)) {
       console.error("Invalid product:", product);
       return false;
     }
+    
+    // Ensure we're using the product's unique ID
+    const productId = product.id;
+    if (!productId) {
+      console.error("Product missing ID:", product);
+      return false;
+    }
+
     try {
-      this.cart.addItem(product, amount);
+      // Check if product already exists in cart
+      const existing = this.cart.items.get(productId);
+      if (existing) {
+        // Update quantity if product exists
+        existing.amount += amount;
+      } else {
+        // Add new product if it doesn't exist
+        this.cart.items.set(productId, { product, amount });
+      }
       this.saveCart();
       return true;
     } catch (e) {
